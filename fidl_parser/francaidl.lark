@@ -9,7 +9,7 @@
 // [x.y.z] in comments refers to chapters in the User Guide.
 //
 
-root: "package" FIDL_NAME (interface | type_collection | import)*
+root: "package" FIDL_IDENTIFIER (interface | type_collection | import)*
 
 // [5.1]
 // All datatypes
@@ -349,6 +349,9 @@ FIDL_NQ_NAME: ("_"|LETTER) ("_"|LETTER|DIGIT)*
 
 // Fully qualified names. Accept periods.
 FIDL_FQ_NAME: FIDL_NQ_NAME ("." FIDL_NQ_NAME)+
+
+// Simple or fully qualified name, but not dereferenced name
+FIDL_IDENTIFIER: FIDL_NQ_NAME | FIDL_FQ_NAME
 
 // Derefenced name
 // ISSUE: Not documented but used in testcases/core_tests/evaluation/IntegerExpressions.fidl
