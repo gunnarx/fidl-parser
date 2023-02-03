@@ -9,7 +9,8 @@
 // [x.y.z] in comments refers to chapters in the User Guide.
 //
 
-root: "package" FIDL_IDENTIFIER (interface | type_collection | import)*
+root: package (interface | type_collection | import)*
+package: "package" FIDL_IDENTIFIER 
 
 // [5.1]
 // All datatypes
