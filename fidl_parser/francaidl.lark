@@ -213,19 +213,17 @@ boolean_op:
 
 // [5.4]
 // Type collection
-// FIXME: Allow "version" element to be anywhere in type collection body.
-//
+// FIXME: This now allows more than one version element, which is likely an error (but should be uncommon)
 type_collection: "typeCollection" FIDL_NQ_NAME type_collection_body
-type_collection_body: "{" version? ( constant | map | typedef |struct | enumeration | explicit_array | union | map | datatype )* "}"
+type_collection_body: "{" ( version | constant | map | typedef |struct | enumeration | explicit_array | union | map | datatype )* "}"
 
 // [5.5]
 // Interfaces
-// FIXME: Allow "version" element to be anywhere in interface body.
-//
+// FIXME: This now allows more than one version element, which is likely an error (but should be uncommon)
 interface: "interface" FIDL_NQ_NAME  extends_interface? manages_interface? interface_body
 extends_interface: "extends" FIDL_NAME
 manages_interface: "manages" FIDL_NAME ( "," FIDL_NAME)*
-interface_body: "{" version? ( constant | map | typedef | struct | enumeration | explicit_array | union | attribute | method | broadcast | enumeration | contract )* "}"
+interface_body: "{" ( version | constant | map | typedef | struct | enumeration | explicit_array | union | attribute | method | broadcast | enumeration | contract )* "}"
 
 // [5.5.2]
 // Attributes
