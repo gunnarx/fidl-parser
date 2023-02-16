@@ -67,8 +67,7 @@ def process_lark_tree_entry(state, lark_tree, lark_entry, parse_map):
         return None
 
     if len(entries) > 1:
-        log(f"{ind()}Too many matches, {len(entries)} in {lark_entry}. exit.")
-        raise Exception(f"Too many matches for {lark_tree.data}[{lark_entry}]-> {len(entries)}")
+        return [ process_lark_tree(state, e, parse_map) for e in entries ]
 
     result = process_lark_tree(state, entries[0], parse_map)
     log(f"{ind()}Result: {type(result)} - {len(result)} elements")
