@@ -12,6 +12,6 @@ typeCollection MyTypes {
 		Int8 plainMember1
 		MyStruct1 structMember1
 		MyStruct1 structMember2
-                snopp field3
+// FIXME: type is not being resolved:                nopp field3
 	}
 }
