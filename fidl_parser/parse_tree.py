@@ -6,6 +6,7 @@
 #
 import lark
 import json
+import sys
 from . import type_manager
 
 # Debug printout wrapper to have a single place to turn them off
@@ -285,7 +286,7 @@ def evaluate_expression(state, lark_tree, expr_name, target_name):
         "FIDL_CONST_FLOAT": lambda token: float(token),
         "FIDL_CONST_DOUBLE": lambda token: float(token),
         "FIDL_CONST_STRING": lambda token: token.strip('"'),
-        "FIDL_NAME": lambda token: print(f"WE DO NOT EVAL NAMES: {token.value}") + sys.exit(255)
+        "FIDL_NAME": lambda token: print(f"WE DO NOT EVAL NAMES: {token}") + sys.exit(255)
     }
 
     @indent
