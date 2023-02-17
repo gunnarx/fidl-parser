@@ -63,18 +63,22 @@ implicit_array: datatype "[]"
 // Inherited enumerations
 //
 ?enumeration: base_enumeration | inherited_enumeration
-base_enumeration:      "enumeration" FIDL_NQ_NAME "{" enumerator_member+ "}"
-inherited_enumeration: "enumeration" FIDL_NQ_NAME "extends" FIDL_NAME "{" enumerator_member+ "}"
+
+// ENUMERATION as a separate token, with parsing priority, otherwise the word "enumeration" seems to be interpreted as a FIDL(NQ)NAME token
+ENUMERATION.1: "enumeration"
+base_enumeration:      ENUMERATION FIDL_NQ_NAME "{" enumerator_member+ "}"
+inherited_enumeration: ENUMERATION FIDL_NQ_NAME "extends" FIDL_NAME "{" enumerator_member+ "}"
 enumerator_member: FIDL_NQ_NAME  ("=" expression)?
 
 // [5.1.5]
 // Structures
 // Inherited structs
-//
-?struct: base_struct | inherited_struct
-base_struct:      "struct" FIDL_NQ_NAME FIDL_POLYMORPHIC? "{" member+ "}"
-inherited_struct: "struct" FIDL_NQ_NAME "extends" FIDL_NAME "{" member+ "}"
 
+// STRUCT as a separate token, with parsing priority, otherwise the word "struct" seems to be interpreted as a FIDL(NQ)NAME token
+STRUCT.1: "struct"
+?struct: base_struct | inherited_struct
+base_struct:      STRUCT FIDL_NQ_NAME FIDL_POLYMORPHIC? "{" member+ "}"
+inherited_struct: STRUCT FIDL_NQ_NAME "extends" FIDL_NAME "{" member+ "}"
 
 // [5.1.6]
 // Unions
@@ -88,10 +92,11 @@ inherited_union: "union" FIDL_NQ_NAME "extends" FIDL_NAME "{" member+ "}"
 // [5.1.7]
 // Maps
 //
+// TO as a separate token, with parsing priority, otherwise the word "to" seems to be interpreted as a FIDL(NQ)NAME token
+TO.1: "to"
 map:           "map" FIDL_NQ_NAME map_body
 inherited_map: "map" FIDL_NQ_NAME "extends" FIDL_NAME map_body
-?map_body: "{" map_member+ "}"
-map_member: ( map_key "to" map_value)
+?map_body: "{" ( map_key TO map_value)+ "}"
 map_key: datatype
 map_value: datatype
 
@@ -102,12 +107,16 @@ map_value: datatype
 // [5.1.8]
 // Typedefs
 //
-typedef: "typedef" FIDL_NQ_NAME "is" datatype
+// TYPEDEF as a separate token, with parsing priority, otherwise the word "typedef" seems to be interpreted as a FIDL(NQ)NAME token
+TYPEDEF.2: "typedef"
+typedef: TYPEDEF FIDL_NQ_NAME "is" datatype
 
 // [5.2.1]
 // Primitive constants
 //
-constant: "const" datatype FIDL_NQ_NAME "=" const_init
+// CONST as a separate token, with parsing priority, otherwise the word "const" seems to be interpreted as a FIDL(NQ)NAME token
+CONST.1: "const"
+constant: CONST  datatype FIDL_NQ_NAME "=" const_init
 
 // [5.2.2]
 // Complex constants
@@ -338,7 +347,8 @@ FIDL_NQ_NAMESPACE: ("_"|LETTER) ("_"|LETTER|DIGIT|"."|"*")*
 FIDL_FILE_NAME: FIDL_CONST_STRING
 
 // Version
-version: "version" "{" "major" FIDL_MAJOR_VERSION_INT "minor" FIDL_MINOR_VERSION_INT "}"
+// version is being prioritized because the word "version" seems to be interpreted as a FIDL(NQ)NAME
+version.1: "version" "{" "major" FIDL_MAJOR_VERSION_INT "minor" FIDL_MINOR_VERSION_INT "}"
 
 FIDL_MAJOR_VERSION_INT: INT
 FIDL_MINOR_VERSION_INT: INT
